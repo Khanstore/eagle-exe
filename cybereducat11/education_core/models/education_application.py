@@ -70,15 +70,41 @@ class StudentApplication(models.Model):
     date_of_birth = fields.Date(string="Date Of birth", required=True, help="Enter your DOB")
     guardian_relation = fields.Many2one('gurdian.student.relation', string="Relation to Guardian",  required=True,
                                         help="Tell us the Relation toyour guardian")
-    guardian_name = fields.Many2one('res.partner', string="Guardian", domain=[('is_parent', '=', True)], required=True,
-                                    help="Tell us who will take care of you")
+    #### guardian Details
+    guardian_f_name = fields.Char(string="guardian's First Name", help="Proud to say my guardian is")
+    guardian_m_name = fields.Char(string="guardian's Middle Name", help="Proud to say my guardian is")
+    guardian_l_name = fields.Char(string="guardian's Last Name", help="Proud to say my guardian is")
+    guardian_NID = fields.Integer(string="guardian's NID", help="guardian's NID")
+    guardian_mobile = fields.Integer(string="guardian's Mobile No", help="guardian's Mobile No")
+    guardian_car_no = fields.Integer(string="guardian's Car No", help="guardian's Car No")
+
+    # guardian_name = fields.Many2one('res.partner', string="Guardian", domain=[('is_parent', '=', True)], required=True,
+    #                                 help="Tell us who will take care of you")
     description = fields.Text(string="Note")
-    # father_name = fields.Char(string="Father", help="Proud to say my father is")
-    father_name = fields.Many2one('res.partner', string="Father", domain=[('is_parent', '=', True)], required=True,
-                                    help="Proud to say my father is")
+    #### Father Details
+    father_f_name = fields.Char(string="Father's First Name", help="Proud to say my father is")
+    father_m_name = fields.Char(string="Father's Middle Name", help="Proud to say my father is")
+    father_l_name = fields.Char(string="Father's Last Name", help="Proud to say my father is")
+    father_f_name_b = fields.Char(string="Father's First Name", help="Proud to say my father is")
+    father_m_name_b = fields.Char(string="Father's Middle Name", help="Proud to say my father is")
+    father_l_name_b = fields.Char(string="Father's Last Name", help="Proud to say my father is")
+    father_NID = fields.Integer(string="Father's NID", help="Father's NID")
+    father_mobile = fields.Integer(string="Father's Mobile No", help="Father's Mobile No")
+    father_car_no = fields.Integer(string="Father's Car No", help="Father's Car No")
+    # father_name = fields.Many2one('res.partner', string="Father", domain=[('is_parent', '=', True)], required=True, help="Proud to say my father is")
     # mother_name = fields.Char(string="Mother", help="My mother's name is")
-    mother_name = fields.Many2one('res.partner', string="Mother", domain=[('is_parent', '=', True)], required=True,
-                                    help="My mother name is")
+    # mother_name = fields.Many2one('res.partner', string="Mother", domain=[('is_parent', '=', True)], required=True, help="My mother name is")
+    #### Mother Details
+    mother_f_name = fields.Char(string="mother's First Name", help="Proud to say my mother is")
+    mother_f_name_b = fields.Char(string="mother's First Name", help="Proud to say my mother is")
+    mother_m_name = fields.Char(string="mother's Middle Name", help="Proud to say my mother is")
+    mother_m_name_b = fields.Char(string="mother's Middle Name", help="Proud to say my mother is")
+    mother_l_name = fields.Char(string="mother's Last Name", help="Proud to say my mother is")
+    mother_l_name_b = fields.Char(string="mother's Last Name", help="Proud to say my mother is")
+    mother_NID = fields.Integer(string="mother's NID", help="mother's NID")
+    mother_mobile = fields.Integer(string="mother's Mobile No", help="mother's Mobile No")
+    mother_car_no = fields.Integer(string="mother's Car No", help="mother's Car No")
+
     religion_id = fields.Many2one('religion.religion', string="Religion", help="My Religion is ")
     caste_id = fields.Many2one('religion.caste', string="Caste", help="My Caste is ")
     class_id = fields.Many2one('education.class.division', string="Class")
