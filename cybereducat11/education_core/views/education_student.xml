@@ -122,6 +122,7 @@
                                     <field name="father_name"/>
                                     <field name="mother_name"/>
                                     <field name="guardian_name"/>
+                                    <field name="guardian_relation" />
                                     <field name="religion_id"/>
                                 </group>
                                 <group>

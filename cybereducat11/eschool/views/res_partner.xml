@@ -29,6 +29,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='is_parent']" position="after">
                     <field name="nid_no"/>
+                    <field name="car_no"/>
+                    <field name="gender"/>
                 </xpath>
 
             </field>

@@ -61,9 +61,9 @@ class EducationStudent(models.Model):
     guardian_name = fields.Many2one('res.partner', string="Guardian", domain=[('is_parent', '=', True)])
     # father_name = fields.Char(string="Father")
     # mother_name = fields.Char(string="Mother")
-    father_name = fields.Many2one('res.partner', string="Father", domain=[('is_parent', '=', True)], required=True,
+    father_name = fields.Many2one('res.partner', string="Father", domain=[('is_parent', '=', True),('gender', '!=', 'female')], required=True,
                                   help="Proud to say my father is")
-    mother_name = fields.Many2one('res.partner', string="Mother", domain=[('is_parent', '=', True)], required=True,
+    mother_name = fields.Many2one('res.partner', string="Mother", domain=[('is_parent', '=', True),('gender', '!=', 'male')], required=True,
                                   help="My mother name is")
     class_id = fields.Many2one('education.class.division', string="Class")
     admission_class = fields.Many2one('education.class', string="Admission Class")

@@ -6,9 +6,8 @@ from odoo.exceptions import ValidationError
 class GuardianStudentRelation(models.Model):
     _name='gurdian.student.relation'
     name=fields.Char(string='Name',required=True)
-    gender=fields.Selection([('m',"Male"),
-                             ('f','Female'),
-                             ('b', 'Both')])
+    gender=fields.Selection([('male',"Male"),
+                             ('female','Female')])
     relation=fields.Char(string='Relation',required=True)
     reverse_male=fields.Char(string='Reverse  Relation (Male)',required=True)
     reverse_female=fields.Char(string='Reverse Relation (Female)',required=True)
@@ -41,7 +40,7 @@ class StudentApplication(models.Model):
                                     required=True, help="Enter Student's Mother Tongue")
     admission_class = fields.Many2one('education.class', string="Class", required=True,
                                       help="Enter Class to which the admission is seeking")
-    admission_date = fields.Datetime('Admission Date', default=fields.Datetime.now, required=True)
+    admission_date = fields.Datetime('Admission Date') #, default=fields.Datetime.now, required=True
     application_no = fields.Char(string='Application  No', required=True, copy=False, readonly=True,
                        index=True, default=lambda self: _('New'))
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.user.company_id)
@@ -78,7 +77,7 @@ class StudentApplication(models.Model):
     guardian_l_name = fields.Char(string="guardian's Last Name", help="Proud to say my guardian is")
     guardian_NID = fields.Integer(string="guardian's NID", help="guardian's NID")
     guardian_mobile = fields.Integer(string="guardian's Mobile No", help="guardian's Mobile No")
-    guardian_car_no = fields.Integer(string="guardian's Car No", help="guardian's Car No")
+    guardian_car_no = fields.Char(string="guardian's Car No", help="guardian's Car No")
 
     # guardian_name = fields.Many2one('res.partner', string="Guardian", domain=[('is_parent', '=', True)], required=True,
     #                                 help="Tell us who will take care of you")
@@ -92,7 +91,7 @@ class StudentApplication(models.Model):
     father_l_name_b = fields.Char(string="Father's Last Name", help="Proud to say my father is")
     father_NID = fields.Integer(string="Father's NID", help="Father's NID")
     father_mobile = fields.Integer(string="Father's Mobile No", help="Father's Mobile No")
-    father_car_no = fields.Integer(string="Father's Car No", help="Father's Car No")
+    father_car_no = fields.Char(string="Father's Car No", help="Father's Car No")
     # father_name = fields.Many2one('res.partner', string="Father", domain=[('is_parent', '=', True)], required=True, help="Proud to say my father is")
     # mother_name = fields.Char(string="Mother", help="My mother's name is")
     # mother_name = fields.Many2one('res.partner', string="Mother", domain=[('is_parent', '=', True)], required=True, help="My mother name is")
@@ -105,7 +104,7 @@ class StudentApplication(models.Model):
     mother_l_name_b = fields.Char(string="mother's Last Name", help="Proud to say my mother is")
     mother_NID = fields.Integer(string="mother's NID", help="mother's NID")
     mother_mobile = fields.Integer(string="mother's Mobile No", help="mother's Mobile No")
-    mother_car_no = fields.Integer(string="mother's Car No", help="mother's Car No")
+    mother_car_no = fields.Char(string="mother's Car No", help="mother's Car No")
 
     religion_id = fields.Many2one('religion.religion', string="Religion", help="My Religion is ")
     caste_id = fields.Many2one('religion.caste', string="Caste", help="My Caste is ")
@@ -175,6 +174,40 @@ class StudentApplication(models.Model):
     def create_student(self):
         """Create student from the application and data and return the student"""
         for rec in self:
+            father_id=self.env['res.partner'].search([('nid_no','=',rec.father_NID)])
+            if father_id.id:
+                father =father_id.id
+            else:
+                new_father_id=father_id.create({'name': rec.father_name,
+                                                'nid_no': rec.father_NID,
+                                                'mobile': rec.father_mobile,
+                                                'car_no': rec.father_car_no,
+                                                'name_b': rec.father_name_b,
+                                                'middle_name': rec.father_m_name,
+                                                'middle_name_b': rec.father_m_name_b,
+                                                'last_name_b': rec.father_l_name_b,
+                                                'last_name': rec.father_l_name,
+                                                'gender': 'male',
+                                                'is_parent': True})
+                father=new_father_id.id
+            mother_id = self.env['res.partner'].search([('nid_no', '=', rec.mother_NID)])
+            if mother_id.id:
+                mother = mother_id.id
+            else:
+                new_mother_id = mother_id.create({'name': rec.mother_name,
+                                                  'nid_no': rec.mother_NID,
+                                                  'gender': 'female',
+                                                  'is_parent': True})
+                mother = new_mother_id.id
+            guardian_id = self.env['res.partner'].search([('nid_no', '=', rec.guardian_NID )])
+            if guardian_id.id:
+                guardian = guardian_id.id
+            else:
+                new_guardian_id = guardian_id.create({'name': rec.guardian_name,
+                                                      'nid_no': rec.guardian_NID,
+                                                      'gender': rec.guardian_relation.gender,
+                                                      'is_parent': True})
+                guardian = new_guardian_id.id
             values = {
                 'name': rec.name,
                 'name_b': rec.name_b,
@@ -183,10 +216,10 @@ class StudentApplication(models.Model):
                 'middle_name': rec.middle_name,
                 'middle_name_b': rec.middle_name_b,
                 'application_id': rec.id,
-                'father_name': rec.father_name.id,
-                'mother_name': rec.mother_name.id,
+                'father_name': father,
+                'mother_name': mother,
                 'guardian_relation': rec.guardian_relation.id,
-                'guardian_name': rec.guardian_name.id,
+                'guardian_name': guardian,
                 'street': rec.street,
                 'street2': rec.street2,
                 'city': rec.city,
