@@ -25,6 +25,8 @@ class StudentApplication(models.Model):
     name_b = fields.Char("নামের প্রথম অংশ",required=True)
     middle_name_b = fields.Char("নামের মধ্যাংশ",required=True)
     last_name_b = fields.Char("নামের শেয়াংশ",required=True)
+    already_student=fields.Boolean("Allready Admitted?")
+    student_id=fields.Char('Student Id')
     prev_school = fields.Many2one('education.institute', string='Previous Institution',
                                   help="Enter the name of previous institution")
     image = fields.Binary(string='Image', help="Provide the image of the Student")
@@ -43,8 +45,8 @@ class StudentApplication(models.Model):
     application_no = fields.Char(string='Application  No', required=True, copy=False, readonly=True,
                        index=True, default=lambda self: _('New'))
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.user.company_id)
-    email = fields.Char(string="Email", help="Enter E-mail id for contact purpose")
-    phone = fields.Char(string="Phone", help="Enter Phone no. for contact purpose")
+    email = fields.Char(string="student Email", help="Enter E-mail id for contact purpose")
+    phone = fields.Char(string="student Phone", help="Enter Phone no. for contact purpose")
     mobile = fields.Char(string="Student Mobile", required=True, help="Enter Mobile num for contact purpose")
     nationality = fields.Many2one('res.country', string='Nationality', ondelete='restrict',default=19,
                                   help="Select the Nationality")
@@ -71,7 +73,7 @@ class StudentApplication(models.Model):
     guardian_relation = fields.Many2one('gurdian.student.relation', string="Relation to Guardian",  required=True,
                                         help="Tell us the Relation toyour guardian")
     #### guardian Details
-    guardian_f_name = fields.Char(string="guardian's First Name", help="Proud to say my guardian is")
+    guardian_name = fields.Char(string="guardian's First Name", help="Proud to say my guardian is")
     guardian_m_name = fields.Char(string="guardian's Middle Name", help="Proud to say my guardian is")
     guardian_l_name = fields.Char(string="guardian's Last Name", help="Proud to say my guardian is")
     guardian_NID = fields.Integer(string="guardian's NID", help="guardian's NID")
@@ -82,10 +84,10 @@ class StudentApplication(models.Model):
     #                                 help="Tell us who will take care of you")
     description = fields.Text(string="Note")
     #### Father Details
-    father_f_name = fields.Char(string="Father's First Name", help="Proud to say my father is")
+    father_name = fields.Char(string="Father's First Name", help="Proud to say my father is")
     father_m_name = fields.Char(string="Father's Middle Name", help="Proud to say my father is")
     father_l_name = fields.Char(string="Father's Last Name", help="Proud to say my father is")
-    father_f_name_b = fields.Char(string="Father's First Name", help="Proud to say my father is")
+    father_name_b = fields.Char(string="Father's First Name", help="Proud to say my father is")
     father_m_name_b = fields.Char(string="Father's Middle Name", help="Proud to say my father is")
     father_l_name_b = fields.Char(string="Father's Last Name", help="Proud to say my father is")
     father_NID = fields.Integer(string="Father's NID", help="Father's NID")
@@ -95,8 +97,8 @@ class StudentApplication(models.Model):
     # mother_name = fields.Char(string="Mother", help="My mother's name is")
     # mother_name = fields.Many2one('res.partner', string="Mother", domain=[('is_parent', '=', True)], required=True, help="My mother name is")
     #### Mother Details
-    mother_f_name = fields.Char(string="mother's First Name", help="Proud to say my mother is")
-    mother_f_name_b = fields.Char(string="mother's First Name", help="Proud to say my mother is")
+    mother_name = fields.Char(string="mother's First Name", help="Proud to say my mother is")
+    mother_name_b = fields.Char(string="mother's First Name", help="Proud to say my mother is")
     mother_m_name = fields.Char(string="mother's Middle Name", help="Proud to say my mother is")
     mother_m_name_b = fields.Char(string="mother's Middle Name", help="Proud to say my mother is")
     mother_l_name = fields.Char(string="mother's Last Name", help="Proud to say my mother is")
@@ -129,9 +131,19 @@ class StudentApplication(models.Model):
         for rec in self:
             if rec.guardian_relation.name:
                 if  rec.guardian_relation.name=='Father':
+                    rec.guardian_NID=rec.father_NID
+                    rec.guardian_mobile=rec.father_mobile
+                    rec.guardian_car_no=rec.father_car_no
                     rec.guardian_name=rec.father_name
+                    rec.guardian_m_name=rec.father_m_name
+                    rec.guardian_l_name=rec.father_l_name
                 elif  rec.guardian_relation.name=='Mother':
-                    rec.guardian_name=rec.mother_name
+                    rec.guardian_NID = rec.mother_NID
+                    rec.guardian_mobile = rec.mother_mobile
+                    rec.guardian_car_no = rec.mother_car_no
+                    rec.guardian_name = rec.mother_name
+                    rec.guardian_m_name = rec.mother_m_name
+                    rec.guardian_l_name = rec.mother_l_name
 
     @api.model
     def create(self, vals):

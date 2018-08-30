@@ -72,7 +72,12 @@
                                 </tr>
                             </table>
                         </h4>
+                        <group>
+                            <field name="already_student"/>
+                            <field name="student_id" attrs="{'invisible':[('already_student','=',False)]}"/>
+                        </group>
                     </div>
+                     <div  attrs="{'invisible':[('already_student','=',True)]}">
                     <separator/>
                     <group string="Admission Details">
 
@@ -106,10 +111,10 @@
                                  <field name="father_NID"/>
                                  <field name="father_car_no"/>
                                  <field name="father_mobile"/>
-                                 <field name="father_f_name" nolabel='1' placeholder="First Name" colspan="2"/>
+                                 <field name="father_name" nolabel='1' placeholder="First Name" colspan="2"/>
                                  <field name="father_m_name" nolabel='1' placeholder="Middle Name" colspan="2"/>
                                  <field name="father_l_name" nolabel='1' placeholder="Last Name" colspan="2"/>
-                                 <field name="father_f_name_b" nolabel='1' placeholder="নামের প্রথম অংশ" colspan="2"/>
+                                 <field name="father_name_b" nolabel='1' placeholder="নামের প্রথম অংশ" colspan="2"/>
                                  <field name="father_m_name_b" nolabel='1' placeholder="নামের মধ্যাংশ" colspan="2"/>
                                  <field name="father_l_name_b" nolabel='1' placeholder="নামের শেষ অংশ" colspan="2"/>
                              </group>
@@ -118,10 +123,10 @@
                                  <field name="mother_NID"/>
                                  <field name="mother_car_no"/>
                                  <field name="mother_mobile"/>
-                                 <field name="mother_f_name" nolabel='1' placeholder="First Name" colspan="2"/>
+                                 <field name="mother_name" nolabel='1' placeholder="First Name" colspan="2"/>
                                  <field name="mother_m_name" nolabel='1' placeholder="Middle Name" colspan="2"/>
                                  <field name="mother_l_name" nolabel='1' placeholder="Last Name" colspan="2"/>
-                                 <field name="mother_f_name_b" nolabel='1' placeholder="নামের প্রথম অংশ" colspan="2"/>
+                                 <field name="mother_name_b" nolabel='1' placeholder="নামের প্রথম অংশ" colspan="2"/>
                                  <field name="mother_m_name_b" nolabel='1' placeholder="নামের মধ্যাংশ" colspan="2"/>
                                  <field name="mother_l_name_b" nolabel='1' placeholder="নামের শেষ অংশ" colspan="2"/>
                              </group>
@@ -135,7 +140,7 @@
                                     <field name="guardian_NID"/>
                                  <field name="guardian_car_no"/>
                                  <field name="guardian_mobile"/>
-                                 <field name="guardian_f_name" nolabel='1' placeholder="First Name" colspan="2"/>
+                                 <field name="guardian_name" nolabel='1' placeholder="First Name" colspan="2"/>
                                  <field name="guardian_m_name" nolabel='1' placeholder="Middle Name" colspan="2"/>
                                  <field name="guardian_l_name" nolabel='1' placeholder="Last Name" colspan="2"/>
                             </group>
@@ -169,18 +174,18 @@
                          <page string="Contact Details">
                              <separator string="Contact Details"/>
 
-
+                            <group>
                             <field name="email" attrs="{'readonly': [('state', '=', 'done')]}"/>
 
 
                             <field name="phone" attrs="{'readonly': [('state', '=', 'done')]}"/>
                             <field name="mobile" attrs="{'readonly': [('state', '=', 'done')]}"/>
-
+                            </group>
                          </page>
                      </notebook>
 
 
-
+                     </div>
 
                     <group string="Reject Reason" attrs="{'invisible': [('reject_reason', '=',False)]}">
                         <group>
